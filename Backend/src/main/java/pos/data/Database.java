@@ -1,5 +1,6 @@
 package pos.data;
 
+
 import java.sql.*;
 import java.util.Properties;
 
@@ -45,7 +46,7 @@ public class Database {
 
     public PreparedStatement prepareStatement(String statement) throws Exception {
         try {
-            return cnx.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+            return cnx.prepareStatement(statement,Statement.RETURN_GENERATED_KEYS);
         } catch (SQLException e) {
             throw new Exception("ERROR DE BASE DE DATOS");
         }

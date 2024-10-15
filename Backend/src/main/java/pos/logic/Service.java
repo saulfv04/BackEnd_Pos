@@ -48,15 +48,25 @@ public class Service implements  IService {
 
     }
 
+
+
     @Override
     public List<Producto> search(Producto producto) {
         return List.of();
     }
 
+//    @Override
+//    public void updateExistencias(Producto producto) throws Exception{}
+
+
     @Override
     public List<Categoria> search(Categoria categoria) {
         return List.of();
     }
+
+//    @Override
+//    public List<Categoria> getCategorias() {}
+
 
     @Override
     public void create(Factura factura) throws Exception {
@@ -77,6 +87,9 @@ public class Service implements  IService {
     public void delete(Factura factura) throws Exception {
 
     }
+//    @Override
+//    public List<Linea> searchByFacturId(String facturaId){}
+
 
     @Override
     public List<Factura> search(Factura factura) {

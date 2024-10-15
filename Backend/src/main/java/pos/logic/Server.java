@@ -41,8 +41,8 @@ public class Server {
                         break;
                     case Protocol.PRODUCTO_READ:
                         try {
-                            Producto producto = service.read((Producto) is.readObject());
                             os.writeInt(Protocol.ERROR_NO_ERROR);
+                            Producto producto = service.read((Producto) is.readObject());
                             os.writeObject(producto);
                         } catch (Exception ex) {
                             os.writeInt(Protocol.ERROR_ERROR);
@@ -77,6 +77,36 @@ public class Server {
                         }
                         break;
 
+                    case Protocol.PRODUCTO_UPDATEEXISTENCIAS:
+                        try {
+                            service.updateExistencias((Producto) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+//                            os.writeObject(productos);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
+
+                    // Operaciones de Categoria
+                    case Protocol.CATEGORIA_SEARCH:
+                        try{
+                            List<Categoria> categorias= service.search((Categoria) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                            os.writeObject(categorias);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                    break;
+                    case Protocol.CATEGORIAS_GETCATEGORIAS:
+                        try{
+                            List<Categoria> categorias= service.getCategorias();
+//                            is.readObject();
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                            os.writeObject(categorias);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
                     // Operaciones de Cajero
                     case Protocol.CAJERO_CREATE:
                         try {
@@ -205,6 +235,16 @@ public class Server {
                             List<Factura> facturas = service.search((Factura) is.readObject());
                             os.writeInt(Protocol.ERROR_NO_ERROR);
                             os.writeObject(facturas);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
+
+                    case Protocol.FACTURA_SEARCHFACTURAID:
+                        try {
+                            List<Linea> searchFacturaId = service.searchByFacturId((String) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                            os.writeObject(searchFacturaId );
                         } catch (Exception ex) {
                             os.writeInt(Protocol.ERROR_ERROR);
                         }
