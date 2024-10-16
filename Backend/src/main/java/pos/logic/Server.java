@@ -41,8 +41,8 @@ public class Server {
                         break;
                     case Protocol.PRODUCTO_READ:
                         try {
-                            os.writeInt(Protocol.ERROR_NO_ERROR);
                             Producto producto = service.read((Producto) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
                             os.writeObject(producto);
                         } catch (Exception ex) {
                             os.writeInt(Protocol.ERROR_ERROR);
@@ -77,34 +77,35 @@ public class Server {
                         }
                         break;
 
-                    case Protocol.PRODUCTO_UPDATEEXISTENCIAS:
+                    case Protocol.CATEGORIAS_GETCATEGORIAS:
                         try {
-                            service.updateExistencias((Producto) is.readObject());
+                            // Llamar al método getAll() del servicio para obtener la lista de categorías
+                            List<Categoria> categorias = service.getCategorias();
+
+                            // Enviar el código de error si todo está bien
                             os.writeInt(Protocol.ERROR_NO_ERROR);
-//                            os.writeObject(productos);
+
+                            // Enviar la lista de categorías resultantes
+                            os.writeObject(categorias);
+
                         } catch (Exception ex) {
+                            // Enviar el código de error en caso de excepción
                             os.writeInt(Protocol.ERROR_ERROR);
+
+                            // Imprimir el stacktrace para depurar
+                            ex.printStackTrace();
                         }
                         break;
 
-                    // Operaciones de Categoria
-                    case Protocol.CATEGORIA_SEARCH:
-                        try{
-                            List<Categoria> categorias= service.search((Categoria) is.readObject());
-                            os.writeInt(Protocol.ERROR_NO_ERROR);
-                            os.writeObject(categorias);
+                    case Protocol.PRODUCTO_UPDATE_EXISTENCIAS:
+                        try {
+                            // Lee el objeto producto que se va a actualizar
+                            Producto producto = (Producto) is.readObject();
+                            service.updateExistencias(producto); // Llama al servicio para actualizar las existencias
+                            os.writeInt(Protocol.ERROR_NO_ERROR); // Enviar respuesta de éxito
                         } catch (Exception ex) {
-                            os.writeInt(Protocol.ERROR_ERROR);
-                        }
-                    break;
-                    case Protocol.CATEGORIAS_GETCATEGORIAS:
-                        try{
-                            List<Categoria> categorias= service.getCategorias();
-//                            is.readObject();
-                            os.writeInt(Protocol.ERROR_NO_ERROR);
-                            os.writeObject(categorias);
-                        } catch (Exception ex) {
-                            os.writeInt(Protocol.ERROR_ERROR);
+                            os.writeInt(Protocol.ERROR_ERROR); // Enviar respuesta de error
+                            ex.printStackTrace(); // Imprimir el stack trace para depuración
                         }
                         break;
                     // Operaciones de Cajero
@@ -195,10 +196,10 @@ public class Server {
                     // Operaciones de Factura
                     case Protocol.FACTURA_CREATE:
                         try {
-                            service.create((Factura) is.readObject());
-                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                            service.create((Factura) is.readObject()); // Lee el objeto Factura del cliente y lo pasa al servicio
+                            os.writeInt(Protocol.ERROR_NO_ERROR); // Envía respuesta de éxito
                         } catch (Exception ex) {
-                            os.writeInt(Protocol.ERROR_ERROR);
+                            os.writeInt(Protocol.ERROR_ERROR); // Envía respuesta de error en caso de excepción
                         }
                         break;
 
@@ -232,19 +233,24 @@ public class Server {
 
                     case Protocol.FACTURA_SEARCH:
                         try {
-                            List<Factura> facturas = service.search((Factura) is.readObject());
-                            os.writeInt(Protocol.ERROR_NO_ERROR);
-                            os.writeObject(facturas);
+                            Factura factura = (Factura) is.readObject(); // Leer el objeto factura a buscar
+                            List<Factura> facturas = service.search(factura); // Llamar al servicio para buscar facturas
+                            os.writeInt(Protocol.ERROR_NO_ERROR); // Enviar respuesta de éxito
+                            os.writeObject(facturas); // Enviar la lista de facturas encontradas
                         } catch (Exception ex) {
-                            os.writeInt(Protocol.ERROR_ERROR);
+                            os.writeInt(Protocol.ERROR_ERROR); // Enviar respuesta de error
+                            ex.printStackTrace(); // Imprimir el stack trace para depuración
                         }
                         break;
 
                     case Protocol.FACTURA_SEARCHFACTURAID:
                         try {
-                            List<Linea> searchFacturaId = service.searchByFacturId((String) is.readObject());
+                            String facturaId = (String) is.readObject(); // Leer el ID de la factura del cliente
+                            Factura factura = new Factura();
+                            factura.setId(facturaId); // Suponiendo que Factura tiene un método setId
+                            List<Linea> lineas = service.searchByFacturId(factura.getId()); // Llamar al servicio
                             os.writeInt(Protocol.ERROR_NO_ERROR);
-                            os.writeObject(searchFacturaId );
+                            os.writeObject(lineas); // Enviar la lista de líneas asociadas a la factura
                         } catch (Exception ex) {
                             os.writeInt(Protocol.ERROR_ERROR);
                         }
@@ -302,9 +308,13 @@ public class Server {
                         System.out.println("Operación no válida: " + method);
                         break;
                 }
+                os.flush();
+
             }
+            os.flush();
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
 }
+
