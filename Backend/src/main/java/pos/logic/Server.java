@@ -1,5 +1,7 @@
 package pos.logic;
 
+import pos.data.UsuarioDao;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -268,8 +270,8 @@ public class Server {
                     case Protocol.LINEA_READ:
                         try {
                             Linea linea = service.read((Linea) is.readObject());
-                            os.writeInt(Protocol.ERROR_NO_ERROR);
                             os.writeObject(linea);
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
                         } catch (Exception ex) {
                             os.writeInt(Protocol.ERROR_ERROR);
                         }
@@ -302,7 +304,43 @@ public class Server {
                             os.writeInt(Protocol.ERROR_ERROR);
                         }
                         break;
+                    case Protocol.USUARIO_CREATE:
+                        try {
+                            service.create((Usuarios) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
 
+                    case Protocol.USUARIO_READ:
+                        try {
+                           Usuarios usuarios = service.read((Usuarios) is.readObject());
+                            os.writeObject(usuarios);
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
+
+                    case Protocol.USUARIO_DELETE:
+                        try {
+                            service.delete((Usuarios) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
+
+                    case Protocol.USUARIO_SEARCH:
+                        try {
+                            List<Usuarios> usuarios = service.search((Usuarios) is.readObject());
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                            os.writeObject(usuarios);
+                        } catch (Exception ex) {
+                            os.writeInt(Protocol.ERROR_ERROR);
+                        }
+                        break;
 
                     default:
                         System.out.println("Operación no válida: " + method);

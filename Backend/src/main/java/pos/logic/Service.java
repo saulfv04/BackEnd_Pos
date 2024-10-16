@@ -15,6 +15,7 @@ public class Service implements IServive{
     private CajeroDao cajeroDao;
     private FacturaDao facturaDao;
     private LineaDao lineaDao;
+    private UsuarioDao usuarioDao;
 
     public Service(){
         try{
@@ -24,6 +25,7 @@ public class Service implements IServive{
             cajeroDao= new CajeroDao();
             facturaDao= new FacturaDao();
             lineaDao= new LineaDao();
+            usuarioDao= new UsuarioDao();
         }catch (Exception e){
 
         }
@@ -312,7 +314,45 @@ public class Service implements IServive{
             // Llama al método del DAO que busca clientes
             return cajeroDao.search(cajero);
         } catch (Exception ex) {
-            throw new RuntimeException("Error al buscar clientes", ex);
+            throw new RuntimeException("Error al buscar cajeros", ex);
+        }
+    }
+
+    @Override
+    public void create(Usuarios usuarios) throws Exception {
+        try {
+             usuarioDao.create(usuarios); // Llama al método del DAO para crear un nuevo cajero
+        } catch (Exception ex) {
+            throw new RuntimeException("Error al crear el usuario", ex);
+        }
+
+    }
+
+    @Override
+    public Usuarios read(Usuarios usuarios) throws Exception {
+        try {
+            return usuarioDao.read(usuarios.getId()); // Llama al método del DAO para leer un cajero
+        } catch (Exception ex) {
+            throw new RuntimeException("Error al leer el usuario", ex);
+        }
+    }
+
+    @Override
+    public void delete(Usuarios usuarios) throws Exception {
+        try {
+            usuarioDao.delete(usuarios); // Llama al método del DAO para eliminar el cajero
+        } catch (Exception ex) {
+            throw new RuntimeException("Error al eliminar el usuario", ex);
+        }
+    }
+
+    @Override
+    public List<Usuarios> search(Usuarios usuarios) {
+        try {
+            // Llama al método del DAO que busca clientes
+            return usuarioDao.search(usuarios);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error al buscar usuario", ex);
         }
     }
 }
