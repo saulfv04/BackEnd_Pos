@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="angus-activation-1.0.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/angus-activation-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/bouncy-castle-connector-8.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/commons-8.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/commons-imaging-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/commons-io-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/io-8.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/itext-xtra-5.5.13.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/jakarta.activation-api-2.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/jakarta.xml.bind-api-4.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/jaxb-core-4.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/jaxb-impl-4.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/jcommon-1.0.23.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/jfreechart-1.0.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/kernel-8.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/layout-8.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/mysql-connector-java-8.0.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/protobuf-java-3.11.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../SUPERMERCADO-/lib/slf4j-api-1.7.36.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
