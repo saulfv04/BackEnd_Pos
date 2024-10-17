@@ -5,7 +5,7 @@ import pos.data.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Service implements IServive{
+public class Service implements IService{
     private static Service theInstance;
     public static Service instance;
 
@@ -353,6 +353,14 @@ public class Service implements IServive{
             return usuarioDao.search(usuarios);
         } catch (Exception ex) {
             throw new RuntimeException("Error al buscar usuario", ex);
+        }
+    }
+
+    public float[][] estadisticas(List<Categoria> rows, List<String> cols, Rango rango) throws Exception {
+        try {
+            return lineaDao.estadisticas(rows, cols, rango); // Llama al método del DAO que calcula las estadísticas
+        } catch (Exception ex) {
+            throw new RuntimeException("Error al calcular las estadísticas", ex);
         }
     }
 }
