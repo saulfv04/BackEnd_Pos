@@ -354,8 +354,10 @@ public class Worker {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
                             break;
+
                         case Protocol.ESTADISTICAS_GETFACTURAS:
                             try {
+
                                 // 1. Leer los parámetros enviados por el cliente
                                 List<Categoria> categorias = (List<Categoria>) is.readObject();  // leer las categorías
                                 List<String> cols = (List<String>) is.readObject();              // leer las columnas

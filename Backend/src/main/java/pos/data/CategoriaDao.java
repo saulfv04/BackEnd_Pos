@@ -17,7 +17,6 @@ public class CategoriaDao {
     public List<Categoria> getAll() throws Exception {
         List<Categoria> categorias = new ArrayList<>();
         String sql = "SELECT * FROM Categoria"; // Asegúrate de que 'id' está presente en la tabla
-
         try (PreparedStatement stmt = Database.instance().prepareStatement(sql);
              ResultSet rs = Database.instance().executeQuery(stmt)) {
 
