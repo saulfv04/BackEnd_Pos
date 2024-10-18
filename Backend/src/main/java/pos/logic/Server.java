@@ -35,7 +35,7 @@ public class Server {
             try{
                 s= srv.accept();
                 System.out.println("Conexión establecida");
-                worker = new Worker(srv,s, service);
+                worker = new Worker(this,s, service);
                 workers.add(worker);
                 System.out.println("Quedan: "+workers.size());
                 worker.start();

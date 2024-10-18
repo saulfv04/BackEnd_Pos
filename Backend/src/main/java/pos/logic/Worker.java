@@ -9,8 +9,8 @@ import java.util.List;
 public class Worker {
     Service service;
     Socket s;
-    ServerSocket srv;
-    public Worker(ServerSocket srv,Socket s, Service service) {
+    Server srv;
+    public Worker(Server srv,Socket s, Service service) {
         this.service = service;
         this.s = s;
         this.srv = srv;
@@ -376,9 +376,13 @@ public class Worker {
                                 ex.printStackTrace(); // para depuración, puedes eliminar esto en producción
                             }
                             break;
+                        case Protocol.EXIT:
+                            os.writeInt(Protocol.ERROR_NO_ERROR);
+                            srv.workers.remove(this);
+                            System.out.println("Quedan:  "+ srv.workers.size());
+                            stop();
+                            break;
                     }
-                    os.flush();
-
                 }
                 os.flush();
             } catch (Exception ex) {
