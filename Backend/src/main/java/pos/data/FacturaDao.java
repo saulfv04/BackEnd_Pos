@@ -59,7 +59,6 @@ public class FacturaDao {
         stm.setString(4, factura.getCliente().getId()); // Suponiendo que el Cliente tiene un método getId()
         stm.setString(5, factura.getCajero().getId()); // Suponiendo que el Cajero tiene un método getId()
         db.executeUpdate(stm);
-
 //         También puedes agregar las líneas de la factura aquí si es necesario
         for (Linea linea : factura.getLinea()) {
             createLinea(factura.getId(), linea); // Método auxiliar para insertar líneas
@@ -164,8 +163,6 @@ public class FacturaDao {
         stm.setString(4, linea.getProducto().getCodigo());
         stm.setString(5, facturaId);
         db.executeUpdate(stm);
-
-
     }
 
     // Método para obtener facturas por año y mes
