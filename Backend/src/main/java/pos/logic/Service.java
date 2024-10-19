@@ -363,5 +363,10 @@ public class Service implements IService{
             throw new RuntimeException("Error al calcular las estadísticas", ex);
         }
     }
+
+    @Override
+    public void exit() {
+        System.out.println("saliendo...");
+    }
 }
 
