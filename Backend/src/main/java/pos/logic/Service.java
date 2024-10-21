@@ -2,12 +2,9 @@ package pos.logic;
 
 import pos.data.*;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-public class Service implements IService{
+public class Service implements IService {
     private static Service theInstance;
     public static IService instance;
 
@@ -31,6 +28,13 @@ public class Service implements IService{
         }catch (Exception e){
 
         }
+    }
+
+    public static IService instance() {
+        if (instance == null) {
+            instance = new Service();
+        }
+        return instance;
     }
 
     @Override
@@ -374,7 +378,12 @@ public class Service implements IService{
 
     @Override
     public void deliver_message(String s) {
+        System.out.println(s);
+    }
 
+    @Override
+    public List<String> usuariosActivos() {
+        return null;
     }
 }
 

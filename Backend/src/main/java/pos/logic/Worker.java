@@ -39,7 +39,6 @@ public class Worker {
         public void start(){
             try{
                 Thread t = new Thread(new Runnable() {
-                    @Override
                     public void run() {
                         listen();
                     }
@@ -47,7 +46,6 @@ public class Worker {
                 continuar=true;
                 t.start();
             }catch (Exception ex){
-
             }
 
         }
@@ -57,8 +55,6 @@ public class Worker {
         public void listen(){
 
             try {
-                ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
-                ObjectInputStream is = new ObjectInputStream(s.getInputStream());
                 int method;
                 while (continuar) {
                     method = is.readInt();
@@ -70,6 +66,7 @@ public class Worker {
                                 service.create((Producto) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 srv.deliver_message(this,"Producto creado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -79,6 +76,7 @@ public class Worker {
                                 Producto producto = service.read((Producto) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(producto);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -88,6 +86,8 @@ public class Worker {
                             try {
                                 service.update((Producto) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Producto actualizado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -97,6 +97,8 @@ public class Worker {
                             try {
                                 service.delete((Producto) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Producto eliminado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -107,6 +109,7 @@ public class Worker {
                                 List<Producto> productos = service.search((Producto) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(productos);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -117,12 +120,11 @@ public class Worker {
                                 // Llamar al método getAll() del servicio para obtener la lista de categorías
                                 List<Categoria> categorias = service.getCategorias();
 
-                                // Enviar el código de error si todo está bien
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
 
                                 // Enviar la lista de categorías resultantes
                                 os.writeObject(categorias);
-
+                                os.flush();
                             } catch (Exception ex) {
                                 // Enviar el código de error en caso de excepción
                                 os.writeInt(Protocol.ERROR_ERROR);
@@ -138,6 +140,8 @@ public class Worker {
                                 Producto producto = (Producto) is.readObject();
                                 service.updateExistencias(producto); // Llama al servicio para actualizar las existencias
                                 os.writeInt(Protocol.ERROR_NO_ERROR); // Enviar respuesta de éxito
+                                srv.deliver_message(this,"Existencias actualizadas");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR); // Enviar respuesta de error
                                 ex.printStackTrace(); // Imprimir el stack trace para depuración
@@ -149,6 +153,7 @@ public class Worker {
                                 service.create((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 srv.deliver_message(this,"Cajero creado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -159,6 +164,7 @@ public class Worker {
                                 Cajero cajero = service.read((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(cajero);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -168,6 +174,8 @@ public class Worker {
                             try {
                                 service.update((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Cajero actualizado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -177,6 +185,8 @@ public class Worker {
                             try {
                                 service.delete((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Cajero eliminado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -187,6 +197,7 @@ public class Worker {
                                 List<Cajero> cajeros = service.search((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(cajeros);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -196,6 +207,7 @@ public class Worker {
                                 service.create((Cliente) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 srv.deliver_message(this,"Cliente creado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -206,6 +218,7 @@ public class Worker {
                                 Cliente cliente = service.read((Cliente) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(cliente);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -215,6 +228,8 @@ public class Worker {
                             try {
                                 service.update((Cliente) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Cliente actualizadp");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -224,6 +239,8 @@ public class Worker {
                             try {
                                 service.delete((Cliente) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Cliente eliminado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -234,6 +251,7 @@ public class Worker {
                                 List<Cliente> clientes = service.search((Cliente) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(clientes);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -244,6 +262,7 @@ public class Worker {
                                 service.create((Factura) is.readObject()); // Lee el objeto Factura del cliente y lo pasa al servicio
                                 os.writeInt(Protocol.ERROR_NO_ERROR); // Envía respuesta de éxito
                                 srv.deliver_message(this,"Factura creada");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR); // Envía respuesta de error en caso de excepción
                             }
@@ -254,6 +273,7 @@ public class Worker {
                                 Factura factura = service.read((Factura) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(factura);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -263,6 +283,8 @@ public class Worker {
                             try {
                                 service.update((Factura) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Factura actualizada");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -272,6 +294,8 @@ public class Worker {
                             try {
                                 service.delete((Factura) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Factura eliminada");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -283,6 +307,7 @@ public class Worker {
                                 List<Factura> facturas = service.search(factura); // Llamar al servicio para buscar facturas
                                 os.writeInt(Protocol.ERROR_NO_ERROR); // Enviar respuesta de éxito
                                 os.writeObject(facturas); // Enviar la lista de facturas encontradas
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR); // Enviar respuesta de error
                                 ex.printStackTrace(); // Imprimir el stack trace para depuración
@@ -307,6 +332,7 @@ public class Worker {
                                 service.create((Linea) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 srv.deliver_message(this,"Linea creada");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -326,6 +352,8 @@ public class Worker {
                             try {
                                 service.update((Linea) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Linea actualizada");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -335,6 +363,8 @@ public class Worker {
                             try {
                                 service.delete((Linea) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Linea eliminada");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -354,6 +384,7 @@ public class Worker {
                                 service.create((Usuarios) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 srv.deliver_message(this,"Usuario creado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -364,6 +395,7 @@ public class Worker {
                                 Usuarios usuarios = service.read((Usuarios) is.readObject());
                                 os.writeObject(usuarios);
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -373,6 +405,8 @@ public class Worker {
                             try {
                                 service.delete((Usuarios) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Usuario eliminado");
+                                os.flush();
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -414,6 +448,7 @@ public class Worker {
                             srv.workers.remove(this);
                             System.out.println("Quedan:  "+ srv.workers.size());
                             stop();
+                            srv.deliver_message(this,"Sesión cerrada");
                             break;
                     }
                 }
@@ -435,4 +470,7 @@ public class Worker {
         }
         }
 
+    public String getSessionId() {
+            return this.sid;
+    }
 }
