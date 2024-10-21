@@ -1,5 +1,7 @@
 package pos.logic;
 
+import javax.swing.*;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -7,13 +9,30 @@ import java.net.Socket;
 import java.util.List;
 
 public class Worker {
-    Service service;
-    Socket s;
     Server srv;
-    public Worker(Server srv,Socket s, Service service) {
+    Socket s;
+    ObjectInputStream is;
+    ObjectOutputStream os;
+    IService service;
+
+    String sid;
+    Socket as;
+    ObjectOutputStream aos;
+    ObjectInputStream ais;
+
+
+    public Worker(Server srv,Socket s, ObjectOutputStream os,ObjectInputStream is,String sid,  IService service) {
         this.service = service;
         this.s = s;
         this.srv = srv;
+        this.os=os;
+        this.is=is;
+        this.sid=sid;
+    }
+    public void setAs(Socket as,ObjectOutputStream aos, ObjectInputStream ais){
+        this.as=as;
+        this.aos=aos;
+        this.ais=ais;
     }
 
         boolean continuar ;
@@ -50,6 +69,7 @@ public class Worker {
                             try {
                                 service.create((Producto) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Producto creado");
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -128,6 +148,7 @@ public class Worker {
                             try {
                                 service.create((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Cajero creado");
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -166,6 +187,15 @@ public class Worker {
                                 List<Cajero> cajeros = service.search((Cajero) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(cajeros);
+                            } catch (Exception ex) {
+                                os.writeInt(Protocol.ERROR_ERROR);
+                            }
+                            break;
+                        case Protocol.CLIENTE_CREATE:
+                            try {
+                                service.create((Cliente) is.readObject());
+                                os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Cliente creado");
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -213,6 +243,7 @@ public class Worker {
                             try {
                                 service.create((Factura) is.readObject()); // Lee el objeto Factura del cliente y lo pasa al servicio
                                 os.writeInt(Protocol.ERROR_NO_ERROR); // Envía respuesta de éxito
+                                srv.deliver_message(this,"Factura creada");
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR); // Envía respuesta de error en caso de excepción
                             }
@@ -275,6 +306,7 @@ public class Worker {
                             try {
                                 service.create((Linea) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Linea creada");
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -321,6 +353,7 @@ public class Worker {
                             try {
                                 service.create((Usuarios) is.readObject());
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
+                                srv.deliver_message(this,"Usuario creado");
                             } catch (Exception ex) {
                                 os.writeInt(Protocol.ERROR_ERROR);
                             }
@@ -390,6 +423,16 @@ public class Worker {
             }
         }
 
-
+    public void deliver_message(String message){
+        if (as != null) {
+            try {
+                aos.writeInt(Protocol.DELIVER_MESSAGE); // Enviar código de mensaje
+                aos.writeObject(message); // Enviar el mensaje
+                aos.flush(); // Asegurarse de que se envíe el mensaje
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        }
 
 }
