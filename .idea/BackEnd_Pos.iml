@@ -9,6 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="angus-activation-1.0.0" level="project" />
-    <orderEntry type="library" name="Protocol" level="project" />
+    <orderEntry type="library" name="Pos" level="project" />
   </component>
 </module>

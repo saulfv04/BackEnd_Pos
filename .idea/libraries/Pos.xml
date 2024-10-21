@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="Protocol">
+  <library name="Pos">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/.idea/Protocol.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/Pos.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

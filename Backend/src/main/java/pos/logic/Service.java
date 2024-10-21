@@ -2,12 +2,14 @@ package pos.logic;
 
 import pos.data.*;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Service implements IService{
     private static Service theInstance;
-    public static Service instance;
+    public static IService instance;
 
     private CategoriaDao categoriaDao;
     private ProductoDao productoDao;
@@ -367,6 +369,12 @@ public class Service implements IService{
     @Override
     public void exit() {
         System.out.println("saliendo...");
+    }
+
+
+    @Override
+    public void deliver_message(String s) {
+
     }
 }
 
