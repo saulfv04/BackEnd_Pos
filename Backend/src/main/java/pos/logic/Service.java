@@ -385,5 +385,10 @@ public class Service implements IService {
     public List<String> usuariosActivos() {
         return null;
     }
+
+
+    public void notifyNewConection(){
+
+    }
 }
 

@@ -451,10 +451,42 @@ public class Worker {
                             stop();
                             srv.deliver_message(this,"Sesión cerrada");
                             break;
-
                         case Protocol.REQUEST_ACTIVE_USERS:
+                            try{
+                                List<String> activeUsers = srv.getActiveUsers();
+                                activeUsers.remove(this.idUsuario);
+                                os.writeInt(Protocol.ERROR_NO_ERROR);
+                                os.writeObject(activeUsers);
+                                os.flush();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+//                        case Protocol.NEW_CONNECTION:
+//                            try {
+//                                if(srv.workers.size() == 1){
+//                                    aos.writeInt(Protocol.ERROR_ERROR);
+//                                    aos.flush();
+//                                }else{
+//                                    List<String> activeUsers = srv.getActiveUsers();
+//                                    activeUsers.remove(this.idUsuario);
+//                                    aos.writeInt(Protocol.NEW_CONNECTION);
+//                                    aos.writeObject(activeUsers);
+//                                    aos.flush();
+//
+//                                    // Notificar a todos los workers sobre la nueva conexión
+//                                    for (Worker worker : srv.workers) {
+//                                        if (worker != this) { // Evitar enviar el mensaje al mismo worker
+//                                            worker.aos.writeInt(Protocol.NEW_CONNECTION);
+//                                            worker.aos.writeObject(activeUsers);
+//                                            worker.aos.flush();
+//                                        }
+//                                    }
+//                                }
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            break;
 
-                            break;
                     }
                 }
                 os.flush();

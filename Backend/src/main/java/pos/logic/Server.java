@@ -58,11 +58,6 @@ public class Server {
                         join(s, os, is, sid,idUsuarioString);
                         break;
 
-                    case Protocol.REQUEST_ACTIVE_USERS:
-                        // Enviar la lista de usuarios activos
-                        List<String> activeUsers = getActiveUsers();
-                        os.writeObject(activeUsers);  // Envía la lista de usuarios activos al cliente
-                        break;
                 }
                 os.flush();
             } catch (IOException | ClassNotFoundException ex) {
