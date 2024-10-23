@@ -52,9 +52,12 @@ public class Server {
 
                     case Protocol.ASYNC:
                         sid = (String) is.readObject();  // receives Session Id
+                        String idUsuarioString= (String) is.readObject();
                         System.out.println("ASYNCH: " + sid);
-                        join(s, os, is, sid);
+                        System.out.println("Usuario Id: " + idUsuarioString);
+                        join(s, os, is, sid,idUsuarioString);
                         break;
+
                     case Protocol.REQUEST_ACTIVE_USERS:
                         // Enviar la lista de usuarios activos
                         List<String> activeUsers = getActiveUsers();
@@ -65,14 +68,14 @@ public class Server {
             } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
-
         }
     }
 
-    public void join(Socket as, ObjectOutputStream aos, ObjectInputStream ais, String sid){
+    public void join(Socket as, ObjectOutputStream aos, ObjectInputStream ais, String sid,String usuario){
         for (Worker w: workers){
             if(w.sid.equals(sid)){
                 w.setAs(as,aos,ais);
+                w.setIdUsuario(usuario);
                 break;
             }
         }
@@ -91,7 +94,7 @@ public class Server {
             for (Worker worker : workers) {
                 String sessionId = worker.getSessionId();  // Suponiendo que Worker tiene un método getSessionId()
                 if (sessionId != null) {  // Verificar que el sessionId no sea nulo
-                    activeUsers.add(sessionId);
+                    activeUsers.add(worker.getIdUsuario());
                 } else {
                     System.out.println("Worker con sessionId nulo encontrado."); // Manejo de sessionId nulo
                 }
@@ -99,8 +102,7 @@ public class Server {
         } else {
             System.out.println("La lista de workers es nula.");
         }
-
-        return activeUsers; // Devolver la lista de usuarios activos
+        return activeUsers; // Devolver la lista de usuarios activos
     }
 
 }

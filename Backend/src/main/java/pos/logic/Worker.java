@@ -19,7 +19,7 @@ public class Worker {
     Socket as;
     ObjectOutputStream aos;
     ObjectInputStream ais;
-
+    String idUsuario;
 
     public Worker(Server srv,Socket s, ObjectOutputStream os,ObjectInputStream is,String sid,  IService service) {
         this.service = service;
@@ -28,6 +28,7 @@ public class Worker {
         this.os=os;
         this.is=is;
         this.sid=sid;
+        this.idUsuario="";
     }
     public void setAs(Socket as,ObjectOutputStream aos, ObjectInputStream ais){
         this.as=as;
@@ -450,6 +451,10 @@ public class Worker {
                             stop();
                             srv.deliver_message(this,"Sesión cerrada");
                             break;
+
+                        case Protocol.REQUEST_ACTIVE_USERS:
+
+                            break;
                     }
                 }
                 os.flush();
@@ -472,5 +477,13 @@ public class Worker {
 
     public String getSessionId() {
             return this.sid;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }
