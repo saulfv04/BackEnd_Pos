@@ -39,12 +39,11 @@ public class Server {
                 ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
                 ObjectInputStream is = new ObjectInputStream(s.getInputStream());
                 int type = is.readInt();
-
                 switch (type) {
                     case Protocol.SYNC:
                         sid = s.getRemoteSocketAddress().toString();
                         System.out.println("SYNCH: " + sid);
-                        worker = new Worker(this, s, os, is, sid, Service.instance);
+                        worker = new Worker(this, s, os, is, sid, Service.instance());
                         workers.add(worker);
                         System.out.println("Quedan: " + workers.size());
                         worker.start();
@@ -55,6 +54,11 @@ public class Server {
                         sid = (String) is.readObject();  // receives Session Id
                         System.out.println("ASYNCH: " + sid);
                         join(s, os, is, sid);
+                        break;
+                    case Protocol.REQUEST_ACTIVE_USERS:
+                        // Enviar la lista de usuarios activos
+                        List<String> activeUsers = getActiveUsers();
+                        os.writeObject(activeUsers);  // Envía la lista de usuarios activos al cliente
                         break;
                 }
                 os.flush();
@@ -79,5 +83,25 @@ public class Server {
             if(w!=from) w.deliver_message(message);
         }
     }
+    public List<String> getActiveUsers() {
+        List<String> activeUsers = new ArrayList<>();
+
+        // Verificar si la lista de workers es nula antes de iterar
+        if (workers != null) {
+            for (Worker worker : workers) {
+                String sessionId = worker.getSessionId();  // Suponiendo que Worker tiene un método getSessionId()
+                if (sessionId != null) {  // Verificar que el sessionId no sea nulo
+                    activeUsers.add(sessionId);
+                } else {
+                    System.out.println("Worker con sessionId nulo encontrado."); // Manejo de sessionId nulo
+                }
+            }
+        } else {
+            System.out.println("La lista de workers es nula.");
+        }
+
+        return activeUsers; // Devolver la lista de usuarios activos
+    }
+
 }
 
