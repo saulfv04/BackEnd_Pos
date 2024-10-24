@@ -518,4 +518,18 @@ public class Worker {
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    public void notifyLogin() {
+        try {
+            if (as != null) {
+                aos.writeInt(Protocol.NEW_CONNECTION);
+                List<String> activeUsers = srv.getActiveUsers();
+                activeUsers.remove(this.idUsuario);
+                aos.writeObject(activeUsers);
+                aos.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

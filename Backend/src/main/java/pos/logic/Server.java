@@ -56,7 +56,9 @@ public class Server {
                         System.out.println("ASYNCH: " + sid);
                         System.out.println("Usuario Id: " + idUsuarioString);
                         join(s, os, is, sid,idUsuarioString);
+                        notifyLogin();
                         break;
+
 
                 }
                 os.flush();
@@ -81,6 +83,15 @@ public class Server {
             if(w!=from) w.deliver_message(message);
         }
     }
+
+    public void notifyLogin(){
+        for (Worker w: workers){
+            w.notifyLogin();
+        }
+    }
+
+
+
     public List<String> getActiveUsers() {
         List<String> activeUsers = new ArrayList<>();
 
