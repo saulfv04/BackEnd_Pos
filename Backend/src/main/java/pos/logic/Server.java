@@ -7,10 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Server {
     ServerSocket srv;
@@ -52,14 +49,12 @@ public class Server {
 
                     case Protocol.ASYNC:
                         sid = (String) is.readObject();  // receives Session Id
-                        String idUsuarioString= (String) is.readObject();
+                        Usuarios usuarios = (Usuarios) is.readObject();
                         System.out.println("ASYNCH: " + sid);
-                        System.out.println("Usuario Id: " + idUsuarioString);
-                        join(s, os, is, sid,idUsuarioString);
-                        notifyLogin();
+                        System.out.println("Usuario Id: " + usuarios);
+                        join(s, os, is, sid,usuarios);
+                        notifyLogin(sid);
                         break;
-
-
                 }
                 os.flush();
             } catch (IOException | ClassNotFoundException ex) {
@@ -68,7 +63,7 @@ public class Server {
         }
     }
 
-    public void join(Socket as, ObjectOutputStream aos, ObjectInputStream ais, String sid,String usuario){
+    public void join(Socket as, ObjectOutputStream aos, ObjectInputStream ais, String sid,Usuarios usuario){
         for (Worker w: workers){
             if(w.sid.equals(sid)){
                 w.setAs(as,aos,ais);
@@ -84,7 +79,7 @@ public class Server {
         }
     }
 
-    public void notifyLogin(){
+    public void notifyLogin(String sid){
         for (Worker w: workers){
             w.notifyLogin();
         }
@@ -92,17 +87,14 @@ public class Server {
 
 
 
-    public List<String> getActiveUsers() {
-        List<String> activeUsers = new ArrayList<>();
+    public List<Usuarios> getActiveUsers(String sid) {
+        List<Usuarios> activeUsers = new ArrayList<>();
 
         // Verificar si la lista de workers es nula antes de iterar
         if (workers != null) {
             for (Worker worker : workers) {
-                String sessionId = worker.getSessionId();  // Suponiendo que Worker tiene un método getSessionId()
-                if (sessionId != null) {  // Verificar que el sessionId no sea nulo
-                    activeUsers.add(worker.getIdUsuario());
-                } else {
-                    System.out.println("Worker con sessionId nulo encontrado."); // Manejo de sessionId nulo
+                if (!Objects.equals(worker.getSessionId(), sid)) {  // Verificar que el sessionId no sea nulo
+                    activeUsers.add(worker.getUsuario());
                 }
             }
         } else {
@@ -111,9 +103,9 @@ public class Server {
         return activeUsers; // Devolver la lista de usuarios activos
     }
 
-    public Worker getWorkerById(String id) {
+    public Worker getWorkerById(Usuarios usuario) {
         for (Worker worker : workers) {
-            if (worker.getIdUsuario().equals(id)) {
+            if (worker.getUsuario().equals(usuario)) {
                 return worker;
             }
         }
