@@ -385,5 +385,15 @@ public class Service implements IService {
     public List<String> usuariosActivos() {
         return null;
     }
+
+    @Override
+    public void enviarFactura(Factura factura, String s) throws Exception {
+
+    }
+
+
+    public void notifyNewConection(){
+
+    }
 }
 

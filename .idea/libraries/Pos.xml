@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Pos">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ProtocolPos/target/artifacts/Pos_jar/Pos.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

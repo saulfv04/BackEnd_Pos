@@ -56,13 +56,10 @@ public class Server {
                         System.out.println("ASYNCH: " + sid);
                         System.out.println("Usuario Id: " + idUsuarioString);
                         join(s, os, is, sid,idUsuarioString);
+                        notifyLogin();
                         break;
 
-                    case Protocol.REQUEST_ACTIVE_USERS:
-                        // Enviar la lista de usuarios activos
-                        List<String> activeUsers = getActiveUsers();
-                        os.writeObject(activeUsers);  // Envía la lista de usuarios activos al cliente
-                        break;
+
                 }
                 os.flush();
             } catch (IOException | ClassNotFoundException ex) {
@@ -86,6 +83,15 @@ public class Server {
             if(w!=from) w.deliver_message(message);
         }
     }
+
+    public void notifyLogin(){
+        for (Worker w: workers){
+            w.notifyLogin();
+        }
+    }
+
+
+
     public List<String> getActiveUsers() {
         List<String> activeUsers = new ArrayList<>();
 
@@ -105,5 +111,13 @@ public class Server {
         return activeUsers; // Devolver la lista de usuarios activos
     }
 
+    public Worker getWorkerById(String id) {
+        for (Worker worker : workers) {
+            if (worker.getIdUsuario().equals(id)) {
+                return worker;
+            }
+        }
+        return null;
+    }
 }
 
