@@ -111,5 +111,13 @@ public class Server {
         return activeUsers; // Devolver la lista de usuarios activos
     }
 
+    public Worker getWorkerById(String id) {
+        for (Worker worker : workers) {
+            if (worker.getIdUsuario().equals(id)) {
+                return worker;
+            }
+        }
+        return null;
+    }
 }
 

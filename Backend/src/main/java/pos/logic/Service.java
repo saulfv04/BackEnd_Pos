@@ -386,6 +386,11 @@ public class Service implements IService {
         return null;
     }
 
+    @Override
+    public void enviarFactura(Factura factura, String s) throws Exception {
+
+    }
+
 
     public void notifyNewConection(){
 
