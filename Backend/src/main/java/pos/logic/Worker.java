@@ -466,7 +466,7 @@ public class Worker {
                             try {
                                 Factura factura = (Factura) is.readObject();
                                 Usuarios usuario = (Usuarios) is.readObject();
-                                Worker w = srv.getWorkerById(usuario);
+                                Worker w = srv.getWorkerByUsuario(usuario);
                                 if (w != null) {
                                     w.aos.writeInt(Protocol.FACTURA_RECEIVE);
                                     w.aos.writeObject(factura);

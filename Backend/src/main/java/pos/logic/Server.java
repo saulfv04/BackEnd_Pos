@@ -103,7 +103,7 @@ public class Server {
         return activeUsers; // Devolver la lista de usuarios activos
     }
 
-    public Worker getWorkerById(Usuarios usuario) {
+    public Worker getWorkerByUsuario(Usuarios usuario) {
         for (Worker worker : workers) {
             if (worker.getUsuario().equals(usuario)) {
                 return worker;
