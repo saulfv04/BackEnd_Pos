@@ -19,7 +19,7 @@ public class Worker {
     Socket as;
     ObjectOutputStream aos;
     ObjectInputStream ais;
-    String idUsuario;
+    Usuarios usuario;
 
     public Worker(Server srv,Socket s, ObjectOutputStream os,ObjectInputStream is,String sid,  IService service) {
         this.service = service;
@@ -28,7 +28,7 @@ public class Worker {
         this.os=os;
         this.is=is;
         this.sid=sid;
-        this.idUsuario="";
+        this.usuario=null  ;
     }
     public void setAs(Socket as,ObjectOutputStream aos, ObjectInputStream ais){
         this.as=as;
@@ -450,12 +450,11 @@ public class Worker {
                             System.out.println("Quedan:  " + srv.workers.size());
                             stop();
                             srv.deliver_message(this, "Sesión cerrada");
-                            srv.notifyLogin();
+                            srv.notifyLogin(sid);
                             break;
                         case Protocol.REQUEST_ACTIVE_USERS:
                             try {
-                                List<String> activeUsers = srv.getActiveUsers();
-                                activeUsers.remove(this.idUsuario);
+                                List<Usuarios> activeUsers = srv.getActiveUsers(sid);
                                 os.writeInt(Protocol.ERROR_NO_ERROR);
                                 os.writeObject(activeUsers);
                                 os.flush();
@@ -466,12 +465,12 @@ public class Worker {
                         case Protocol.FACTURA_SEND:
                             try {
                                 Factura factura = (Factura) is.readObject();
-                                String id = (String) is.readObject();
-                                Worker w = srv.getWorkerById(id);
+                                Usuarios usuario = (Usuarios) is.readObject();
+                                Worker w = srv.getWorkerByUsuario(usuario);
                                 if (w != null) {
                                     w.aos.writeInt(Protocol.FACTURA_RECEIVE);
                                     w.aos.writeObject(factura);
-                                    w.aos.writeObject(this.idUsuario);
+                                    w.aos.writeObject(this.usuario);
                                     w.aos.flush();
                                 }
                             }catch(Exception ex){
@@ -503,20 +502,19 @@ public class Worker {
             return this.sid;
     }
 
-    public String getIdUsuario() {
-        return idUsuario;
+    public Usuarios getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUsuario(Usuarios idUsuario) {
+            this.usuario = idUsuario;
     }
 
     public void notifyLogin() {
         try {
             if (as != null) {
                 aos.writeInt(Protocol.NEW_CONNECTION);
-                List<String> activeUsers = srv.getActiveUsers();
-                activeUsers.remove(this.idUsuario);
+                List<Usuarios> activeUsers = srv.getActiveUsers(sid);
                 aos.writeObject(activeUsers);
                 aos.flush();
             }
