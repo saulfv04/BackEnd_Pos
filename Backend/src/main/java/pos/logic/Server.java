@@ -103,6 +103,30 @@ public class Server {
         return activeUsers; // Devolver la lista de usuarios activos
     }
 
+    public List<Usuarios> getAllActiveUsers() {
+        List<Usuarios> activeUsers = new ArrayList<>();
+
+        // Verificar si la lista de workers es nula antes de iterar
+        if (workers != null) {
+            for (Worker worker : workers) {
+                // Verificar que worker y worker.getUsuario() no sean nulos
+                if (worker != null && worker.getUsuario() != null) {
+                    // Asegurarse de que el ID no esté vacío y que realmente sea un usuario activo
+                    if (!worker.getUsuario().getId().isEmpty()) {
+                        activeUsers.add(worker.getUsuario());
+                        System.out.println("Usuario activo agregado: " + worker.getUsuario().getId());
+                    }
+                }
+            }
+        } else {
+            System.out.println("La lista de workers es nula.");
+        }
+
+        System.out.println("Total de usuarios activos encontrados: " + activeUsers.size());
+        return activeUsers; // Devolver la lista de usuarios activos
+    }
+
+
     public Worker getWorkerByUsuario(Usuarios usuario) {
         for (Worker worker : workers) {
             if (worker.getUsuario().equals(usuario)) {

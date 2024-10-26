@@ -478,6 +478,17 @@ public class Worker {
                             }
                             break;
 
+                        case Protocol.USUARIO_VERIFICATION:
+                            try{
+                                List<Usuarios> activeUsers = srv.getAllActiveUsers();
+                                os.writeInt(Protocol.ERROR_NO_ERROR);
+                                os.writeObject(activeUsers);
+                                os.flush();
+                            }catch(Exception ex){
+                                os.writeInt(Protocol.ERROR_ERROR);
+                            }
+                            break;
+
                     }
                 }
                 os.flush();
