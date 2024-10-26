@@ -387,9 +387,10 @@ public class Service implements IService {
     }
 
     @Override
-    public void enviarFactura(Factura factura, String s) throws Exception {
+    public void enviarFactura(Factura factura, Usuarios usuarios) throws Exception {
 
     }
+
 
     @Override
     public List<Factura> enviarFacturas() throws Exception {
