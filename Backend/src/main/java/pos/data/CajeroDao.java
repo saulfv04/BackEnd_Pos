@@ -88,17 +88,20 @@ public class CajeroDao {
 
     // Método para buscar Cajeros que coincidan con un criterio (por ejemplo, nombre)
     public List<Cajero> search(Cajero e) throws Exception {
-        List<Cajero> resultado = new ArrayList<Cajero>();
-        String sql = "select * " +
-                "from Cajero t " +
-                "where t.nombre like ?";
+        List<Cajero> resultado = new ArrayList<>();
+        String sql = "SELECT * " +
+                "FROM Cajero t " +
+                "WHERE t.id LIKE ?";
+
         PreparedStatement stm = db.prepareStatement(sql);
-        stm.setString(1, "%" + e.getNombre() + "%");
-        ResultSet rs = db.executeQuery(stm);
+        stm.setString(1, "%" + e.getId() + "%"); // Usar el id en lugar de nombre para la búsqueda
+        ResultSet rs = stm.executeQuery();
+
         while (rs.next()) {
-            Cajero r = from(rs, "t");
+            Cajero r = from(rs, "t"); // Método que convierte el ResultSet en un objeto Cajero
             resultado.add(r);
         }
+
         return resultado;
     }
 

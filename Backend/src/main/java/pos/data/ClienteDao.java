@@ -95,7 +95,7 @@ public class ClienteDao {
         String sql = "select * " +
                 "from " +
                 "Cliente t " +
-                "where t.nombre like ?";
+                "where t.id like ?";
         PreparedStatement stm = db.prepareStatement(sql);
         stm.setString(1, "%" + e.getNombre() + "%");
         ResultSet rs = db.executeQuery(stm);
