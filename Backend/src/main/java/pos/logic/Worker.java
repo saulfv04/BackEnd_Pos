@@ -497,7 +497,7 @@ public class Worker {
             }
         }
 
-    public void deliver_message(String message){
+    public synchronized void deliver_message(String message){
         if (as != null) {
             try {
                 aos.writeInt(Protocol.DELIVER_MESSAGE); // Enviar código de mensaje
@@ -507,7 +507,7 @@ public class Worker {
                 throw new RuntimeException(e);
             }
         }
-        }
+    }
 
     public String getSessionId() {
             return this.sid;

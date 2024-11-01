@@ -10,6 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="angus-activation-1.0.0" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.21" level="project" />
-    <orderEntry type="library" name="Pos (2)" level="project" />
+    <orderEntry type="library" name="Pos" level="project" />
   </component>
 </module>
